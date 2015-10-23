@@ -1,28 +1,20 @@
 float horizon;
 float sunX,sunY;
+float goldX,goldY;
 float moonX,moonY;
 float blobX,blobY;
 float x,y,z,w;
+float butX,butY,butW,butH;
 float dx,dy;
 float dxleg,dyleg;        // legs
 float heroX, heroY; 
 float speed;  ///// Hero
 float dark;   //// night
 int cycle;              ////// Day/Night
-float treeX, treeY;
-float b1X,b1Y,b1W,b1H;
-//Tree one,two,three;
-
-
-
-
-
-
-
 
 void setup(){
   
-  size(700,500);
+  size(600,500);
   horizon = height/4;
   x=width/2;
   y=height/2;
@@ -30,46 +22,34 @@ void setup(){
   dy= 5;
   sunX = 0;
   cycle = 0;
-  b1X = 650;
-  b1Y = 480;
-  b1H = 25;
-  b1W =75 ;
+  goldX = random (100,400);
+  goldY = random( 150,350);
+  butX = 550;
+  butY = 450;
+  butW = 50;
+  butH = 75;
   
 }
 
 void reset(){
-  
-  
-  
-  sunX = 700;
+  sunX = 0;
   moonX = 0;
-  
-  
-  
-  
+  heroX = 300;
+  heroY= 250;
 }
-
-
-
 
 void draw(){
   scene();
   
-  if (cycle == 0){
-    sun();
-  }
+  if (cycle == 0)   {   sun()   ;  }    ///// Day
   
-  if (cycle == 1){
-    dark();
-    moon();
-  }
+  if (cycle == 1){   dark();  moon() ;   }    //// Night
   
-  
-  tower();
-  tree();
   button();
+  tower();
   hero();
   door();
+  gold();
   
   //trees();
   
@@ -85,7 +65,7 @@ void scene(){
 
 void dark(){
   background(25,25,130);    ////sky
-  fill(90,220,90);
+  fill(90,220,110);
   rectMode(CORNER);
   rect(0,horizon,width,height*.80);   ///grass
             }
@@ -95,54 +75,7 @@ void door(){
   rectMode(CORNER);
   fill(102,42,10);
   rect(width/2,horizon-33,width/15,height/7);  ////entrance
-  
-}
-
-
-
-
-
-
-
-void tree(){ 
-  
-treeX=50;
-treeY = 100;
-  
-  
-
-noStroke();
-fill(139,69,19);
-rect (treeX+25,treeY,10,30);
-fill(0,100,0);
-triangle(treeX,treeY,75,70,treeX+50,treeY);
-triangle(treeX,treeY-20,75,70-20,treeX+50,treeY-20);
-triangle(treeX,treeY-40,75,70-40,treeX+50,treeY-40);
-
-
-
-
-
-
-
-
-
-}
-
-
-
-
-void button(){
-  fill(0);
-  
-  rect(b1X,b1Y,b1W,b1H);
-  fill(255);
-  text("restart",b1X-15,b1Y);
-  
-}
-
-
-
+           }
 
 void tower(){
   rectMode(CENTER);
@@ -153,37 +86,65 @@ void tower(){
 }
 
 void hero(){
-  
+  heroX = heroX + 1;
+  heroY = heroY + 1;
+  //dx = 30;
+  //dy = 30;
   rectMode(CORNER);
   
   fill(0,100,150);    /// Heros body color
-  rect( x+10,y-6, 25,40,8,8,0,0);    //// Heros body
+  rect( heroX+10,heroY-6, 25,40,8,8,0,0);    //// Heros body
   fill(252  , 230 ,  201);     //face color
-  ellipse(x+25,y-20,30,30);    ///// heros head
+  ellipse(heroX+25,heroY-20,30,30);    ///// heros head
   fill(255,100,100);    //mouth color
   stroke(1);
-  ellipse(x+25,y-10,10,5);  //// Mouth
+  ellipse(heroX+25,heroY-10,10,5);  //// Mouth
   fill(150,200,120);
-  ellipse(x+30,y-20 ,6,5);    /////---- Left Eye
-  ellipse(x+15,y-20 ,6,5);      /////---- Right Eye
+  ellipse(heroX+30,heroY-20 ,6,5);    /////---- Left Eye
+  ellipse(heroX+15,heroY-20 ,6,5);      /////---- Right Eye
   
-  //x = x + dx/2;
-  //y = y + dy/3;
-
- 
+  //heroX = dx +1   ;
+  //heroY = dy  - 1 ;
+  
+  //if ( heroX + goldX == ( =< 20) ) {exit();}
+  
+  if (heroX >= 600) {   heroX = random(1,200);
+  
+                        
+                                  
+                    }
+  
+   
 }
 
-void sun(){
+void gold(){   
+fill(100,100,100);
+ellipse(goldX, goldY ,20,20);
+           }
+  
+void button(){
+
+  rect(butX,butY,butW,butH);
+
+if(mousePressed){
+    
+  if(mouseX>butX && mouseX <butX+butW && mouseY>butY && mouseY <butY+butH){
+    
+    reset();  } }
+
+             }
+  
+
+void sun() {
   sunY = 50;
   sunX= sunX+1;
   fill( 230,235,0 );   //// sun color
   ellipse( sunX, sunY, 40,40 );   /////sun size
-  
   if (sunX >= 725 ){        /// Switch to night      
-    sunX=0;
-    cycle = +1;         
-    }
-}
+            sunX=0;
+            cycle = +1;         
+                   }
+           }
 
   void moon(){
   
@@ -200,12 +161,12 @@ void sun(){
   if (moonX >= 725 ){      ///// switch to Day
     moonX=0;
     cycle = 0;
-    }
-    
-    
-    
-    
-    }
+                    }
+                    
+                    
+               
+  
+  }
   
   
   void keyPressed() {
@@ -214,14 +175,9 @@ void sun(){
     if(key == 'w') { exit(); }
     
     
-   
-    
-   
-}
-    
              
 
    
       
     
-  
+  }
