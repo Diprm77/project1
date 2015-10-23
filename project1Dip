@@ -5,12 +5,15 @@ float moonX,moonY;
 float blobX,blobY;
 float x,y,z,w;
 float butX,butY,butW,butH;
+float sbx,sby;  ////// scoreboard
 float dx,dy;
 float dxleg,dyleg;        // legs
 float heroX, heroY; 
 float speed;  ///// Hero
 float dark;   //// night
 int cycle;              ////// Day/Night
+String score;
+int scorE;
 
 void setup(){
   
@@ -23,19 +26,23 @@ void setup(){
   sunX = 0;
   cycle = 0;
   goldX = random (100,400);
-  goldY = random( 150,350);
+  goldY =  random( 150,350);
   butX = 550;
   butY = 450;
   butW = 50;
   butH = 75;
+  score = "0" + scorE;
+  sbx = 30;
+  sby = 400;
+  scorE = 0;
   
 }
 
 void reset(){
   sunX = 0;
   moonX = 0;
-  heroX = 300;
-  heroY= 250;
+  heroX = random(0,400);
+  heroY= horizon;
 }
 
 void draw(){
@@ -45,12 +52,16 @@ void draw(){
   
   if (cycle == 1){   dark();  moon() ;   }    //// Night
   
+  
+  
+  
   button();
   tower();
   hero();
   door();
   gold();
-  
+  scoreboard();
+  scored();
   //trees();
   
   
@@ -69,7 +80,16 @@ void dark(){
   rectMode(CORNER);
   rect(0,horizon,width,height*.80);   ///grass
             }
-
+            
+void scoreboard(){
+  
+  strokeWeight(5);
+  fill(200,100,100);
+  rect(sbx,sby,50,50);
+  fill(255);
+  text(score,sbx+20,sby+20);
+  strokeWeight(1);
+}
 
 void door(){
   rectMode(CORNER);
@@ -84,6 +104,19 @@ void tower(){
   
   
 }
+
+void scored(){
+  
+  if (dist(heroX,heroY,goldX,goldY) < 100) { 
+    
+    score = "score" +2;
+    reset();
+  }
+}
+ 
+
+  
+  
 
 void hero(){
   heroX = heroX + 1;
